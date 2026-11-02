@@ -4,8 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f6f5f0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="description" content="Compare taxas de maquininhas e descubra quanto sobra no caixa do seu negócio. Simulação gratuita e personalizada." />
     <title>RV Compare | Taxa menor. Mais dinheiro no caixa.</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="assets/icon-192.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -18,16 +23,24 @@
         <span class="brand-mark" aria-hidden="true">rv<span>.</span></span>
         <span class="brand-copy"><strong>RV Compare</strong><small>Taxas que cabem no caixa</small></span>
       </a>
-      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-nav">
-        <span></span><span></span>
-      </button>
       <nav class="main-nav" id="main-nav" aria-label="Navegação principal">
         <a href="#comparativo">Comparativo</a>
         <a href="#simulador">Simulador</a>
         <a href="#vantagens">Vantagens</a>
         <a class="nav-cta" href="#simulador">Calcular agora <span aria-hidden="true">↗</span></a>
       </nav>
+      <button class="nav-install" id="install-app" type="button" aria-label="Instalar RV Compare" aria-haspopup="dialog"><span class="install-icon" aria-hidden="true">↓</span><span class="install-label">Instalar app</span></button>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span>
+      </button>
     </header>
+
+    <dialog class="install-dialog" id="install-dialog" aria-labelledby="install-title">
+      <div class="install-dialog-top"><p class="eyebrow">RV COMPARE · INSTALAÇÃO</p><button class="install-dialog-close" type="button" aria-label="Fechar">×</button></div>
+      <h2 id="install-title">Instale no seu dispositivo</h2>
+      <p class="install-dialog-message" id="install-message">Adicione o RV Compare à tela inicial para abrir o comparador como um app.</p>
+      <button class="button button-primary install-dialog-confirm" type="button">Entendi</button>
+    </dialog>
 
     <main id="top">
       <section class="hero page-wrap" aria-labelledby="hero-title">

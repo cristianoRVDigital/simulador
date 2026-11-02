@@ -170,6 +170,53 @@ mainNav.addEventListener("click", (event) => {
   }
 });
 
+const installButton = document.querySelector("#install-app");
+const installDialog = document.querySelector("#install-dialog");
+const installMessage = document.querySelector("#install-message");
+let deferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  installButton.classList.add("is-installable");
+});
+
+installButton.addEventListener("click", async () => {
+  mainNav.classList.remove("is-open");
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.setAttribute("aria-label", "Abrir menu");
+
+  if (!deferredInstallPrompt) {
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    installMessage.textContent = isIOS
+      ? "No Safari, toque em Compartilhar e depois em Adicionar à Tela de Início."
+      : "No menu do navegador, escolha Instalar RV Compare ou Adicionar à tela inicial.";
+    installDialog.showModal();
+    return;
+  }
+
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+});
+
+document.querySelectorAll(".install-dialog-close, .install-dialog-confirm").forEach((button) => {
+  button.addEventListener("click", () => installDialog.close());
+});
+
+installDialog.addEventListener("click", (event) => {
+  if (event.target === installDialog) installDialog.close();
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  installButton.hidden = true;
+});
+
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+}
+
 loadRates();
 populateSelects();
 renderTable();
