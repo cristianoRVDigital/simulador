@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f5f0" />
+    <meta name="description" content="Compare taxas de maquininhas e descubra quanto sobra no caixa do seu negócio. Simulação gratuita e personalizada." />
+    <title>RV Compare | Taxa menor. Mais dinheiro no caixa.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="RV Compare, início">
+        <span class="brand-mark" aria-hidden="true">rv<span>.</span></span>
+        <span class="brand-copy"><strong>RV Compare</strong><small>Taxas que cabem no caixa</small></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span>
+      </button>
+      <nav class="main-nav" id="main-nav" aria-label="Navegação principal">
+        <a href="#comparativo">Comparativo</a>
+        <a href="#simulador">Simulador</a>
+        <a href="#vantagens">Vantagens</a>
+        <a class="nav-cta" href="#simulador">Calcular agora <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero page-wrap" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> COMPARATIVO DE TAXAS · SIMULAÇÃO GRATUITA</p>
+          <h1 id="hero-title">Taxa menor.<br /><span>Mais dinheiro</span><br />no seu caixa.</h1>
+          <p class="hero-description">Compare o que você paga em cada venda e veja o impacto no fim do mês. Uma decisão melhor começa com números claros.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#simulador">Simular minha economia <span aria-hidden="true">↗</span></a>
+            <a class="text-link" href="#comparativo">Ver taxas <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-proof"><span class="proof-icon" aria-hidden="true">✓</span><span><strong>Simples e sem custo</strong><small>Seus dados ficam só neste navegador</small></span></div>
+        </div>
+        <div class="hero-visual">
+          <img class="hero-photo" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=85" alt="Empreendedora atendendo uma venda no balcão" fetchpriority="high" />
+          <div class="photo-shade"></div>
+          <div class="hero-sticker"><span class="sticker-label">MENOR TAXA NA REFERÊNCIA</span><strong>0,90<span>%</span></strong><small>Débito Visa e Mastercard</small><span class="sticker-divider"></span><span class="sticker-note">RV Pay <b>●</b></span></div>
+          <div class="photo-caption"><span class="caption-line"></span> Decida pelo que sobra, não só pelo que parece barato.</div>
+        </div>
+      </section>
+
+      <section class="trust-strip" aria-label="Sobre a comparação">
+        <div class="trust-inner page-wrap">
+          <div><strong>01</strong><span>Compare taxas por modalidade</span></div>
+          <div><strong>02</strong><span>Projete seu faturamento</span></div>
+          <div><strong>03</strong><span>Escolha com mais clareza</span></div>
+          <p>Taxas de referência editáveis</p>
+        </div>
+      </section>
+
+      <section class="comparison section-pad" id="comparativo" aria-labelledby="comparison-title">
+        <div class="page-wrap">
+          <div class="section-heading heading-split">
+            <div><p class="eyebrow section-eyebrow">01 / COMPARATIVO DIRETO</p><h2 id="comparison-title">Cada taxa conta.<br /><span>Compare lado a lado.</span></h2></div>
+            <p class="section-intro">Veja quanto cada operadora cobra por venda. Os campos são editáveis: cadastre as condições que recebeu e encontre a menor taxa do seu cenário.</p>
+          </div>
+          <div class="table-toolbar"><div><span class="legend-dot"></span> Menor taxa informada</div><button class="text-button" id="reset-rates" type="button">Restaurar taxas de referência <span aria-hidden="true">↺</span></button></div>
+          <div class="table-scroll" role="region" aria-label="Tabela comparativa de taxas. Deslize horizontalmente em telas pequenas." tabindex="0">
+            <table class="rates-table">
+              <thead><tr id="rates-head"><th scope="col">OPERAÇÃO</th></tr></thead>
+              <tbody id="rates-body"></tbody>
+            </table>
+          </div>
+          <p class="table-footnote"><span aria-hidden="true">ⓘ</span> As taxas preenchidas vêm da referência enviada. Campos vazios não entram na comparação. Valores podem variar conforme contrato e condições comerciais.</p>
+        </div>
+      </section>
+
+      <section class="calculator section-pad" id="simulador" aria-labelledby="calculator-title">
+        <div class="page-wrap calculator-layout">
+          <div class="calculator-copy">
+            <p class="eyebrow section-eyebrow">02 / SIMULE O IMPACTO</p>
+            <h2 id="calculator-title">Do percentual<br />para o <span>seu caixa.</span></h2>
+            <p>Conte como você vende hoje. A gente mostra quanto fica com você depois das taxas.</p>
+            <div class="calculator-note"><span aria-hidden="true">↗</span><p><strong>Uma conta fácil de entender.</strong><br />Estimativa baseada na taxa percentual informada, sem antecipação ou custos adicionais.</p></div>
+          </div>
+          <div class="calculator-workspace">
+            <form id="calculator-form" class="calculator-form">
+              <label class="field field-wide">Operadora
+                <select id="provider-select" name="provider"></select>
+              </label>
+              <label class="field field-wide">Tipo de venda
+                <select id="mode-select" name="mode"></select>
+              </label>
+              <label class="field">Valor médio por venda
+                <span class="input-affix"><span>R$</span><input id="sale-amount" name="saleAmount" type="number" min="1" max="1000000" step="10" value="1000" inputmode="decimal" /></span>
+              </label>
+              <label class="field">Vendas por mês
+                <span class="input-affix"><input id="monthly-sales" name="monthlySales" type="number" min="1" max="1000000" step="1" value="80" inputmode="numeric" /><span>vendas</span></span>
+              </label>
+              <label class="field field-wide">Comparar economia com
+                <select id="compare-select" name="compareProvider"></select>
+              </label>
+            </form>
+            <div class="results-panel" aria-live="polite" aria-atomic="true">
+              <div class="results-top"><span>SUA PROJEÇÃO MENSAL</span><span class="result-rate" id="result-rate">—</span></div>
+              <div class="results-main"><span class="result-label" id="result-provider">RV Pay · Débito Visa / Mastercard</span><strong id="result-fees">R$ 0,00</strong><small>em taxas estimadas</small></div>
+              <div class="results-breakdown"><div><span>Faturamento bruto</span><strong id="result-gross">R$ 0,00</strong></div><div><span>Você recebe</span><strong id="result-net">R$ 0,00</strong></div></div>
+              <p class="savings-callout" id="result-savings">Cadastre a taxa da outra operadora para comparar sua economia.</p>
+            </div>
+            <p class="save-notice" id="save-notice" role="status">Suas taxas são salvas automaticamente neste navegador.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="advantages section-pad" id="vantagens" aria-labelledby="advantages-title">
+        <div class="page-wrap">
+          <div class="section-heading heading-split">
+            <div><p class="eyebrow section-eyebrow">03 / O QUE PESA NA DECISÃO</p><h2 id="advantages-title">Taxa é só o começo.<br /><span>Contexto também conta.</span></h2></div>
+            <p class="section-intro">A menor porcentagem ajuda, mas a escolha certa depende do seu jeito de vender. Compare cada modalidade e confira as condições da sua proposta.</p>
+          </div>
+          <div class="advantage-grid">
+            <article class="advantage-item advantage-featured"><span class="advantage-index">A</span><div><p class="eyebrow">DESTAQUE DA REFERÊNCIA</p><h3>RV Pay</h3><p>Taxas competitivas nas modalidades informadas para o segmento de supermercados.</p></div><ul><li>0,90% no débito Visa e Mastercard</li><li>Taxas informadas para crédito e parcelado</li><li>Recebimento D+1 na referência</li></ul></article>
+            <article class="advantage-item"><span class="advantage-index">B</span><div><p class="eyebrow">OUTRA OPÇÃO</p><h3>InfiniteTap</h3><p>Considere as modalidades e condições específicas da sua operação.</p></div><ul><li>Cadastre suas taxas na tabela acima</li><li>Compare bandeiras e prazos recebidos</li><li>Confira custos adicionais do contrato</li></ul></article>
+          </div>
+          <p class="disclaimer">Conteúdo informativo. As taxas podem mudar e estão sujeitas a análise, volume de vendas, bandeira, prazo de recebimento e condições comerciais da operadora.</p>
+        </div>
+      </section>
+
+      <section class="contact-band">
+        <div class="page-wrap contact-inner"><div><p class="eyebrow">PRÓXIMO PASSO</p><h2>Faça a conta do<br /><span>seu negócio.</span></h2><p>Compare gratuitamente e converse com alguém para encontrar um cenário que faça sentido para o seu caixa.</p></div><a class="button button-light" href="https://wa.me/5571992960209?text=Ol%C3%A1%2C%20quero%20fazer%20uma%20compara%C3%A7%C3%A3o%20de%20taxas" target="_blank" rel="noopener noreferrer">Falar com Cristiano <span aria-hidden="true">↗</span></a></div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="page-wrap footer-inner"><a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true">rv<span>.</span></span><span class="brand-copy"><strong>RV Compare</strong><small>Soluções que conectam você ao seu negócio</small></span></a><p>© 2026 RV Compare <span>·</span> Feito para decidir melhor.</p><a href="https://wa.me/5571992960209" target="_blank" rel="noopener noreferrer">WhatsApp (71) 99296-0209</a></div></footer>
+  </body>
+</html>
