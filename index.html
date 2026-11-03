@@ -25,6 +25,7 @@
       </a>
       <nav class="main-nav" id="main-nav" aria-label="Navegação principal">
         <a href="#comparativo">Comparativo</a>
+        <a href="#consulta">Consulta avançada</a>
         <a href="#simulador">Simulador</a>
         <a href="#vantagens">Vantagens</a>
         <a class="nav-cta" href="#simulador">Calcular agora <span aria-hidden="true">↗</span></a>
@@ -88,10 +89,87 @@
         </div>
       </section>
 
+      <section class="reference-section section-pad" id="consulta" aria-labelledby="reference-title">
+        <div class="page-wrap">
+          <div class="section-heading heading-split">
+            <div><p class="eyebrow section-eyebrow">02 / CONSULTA AVANÇADA</p><h2 id="reference-title">Taxa certa para<br /><span>o seu cenário.</span></h2></div>
+            <p class="section-intro">Filtre por adquirente, segmento, prazo, faixa de TPV e bandeira. Veja o líquido por venda e compare as taxas lado a lado.</p>
+          </div>
+
+          <div class="reference-grid">
+            <article class="reference-card" aria-labelledby="offer-title">
+              <div class="reference-card-heading">
+                <div><p class="eyebrow">CONSULTA DE OFERTAS</p><h3 id="offer-title">Veja o valor líquido da venda</h3></div>
+                <span class="reference-badge">Base de referência</span>
+              </div>
+              <form class="advanced-filters" id="offer-filters">
+                <label class="advanced-field">Adquirente
+                  <select id="offer-acquirer" name="acquirer">
+                    <option value="EQUIS">EQUIS</option><option value="PGS" selected>PagSeguro (PGS)</option><option value="STONE">STONE</option>
+                  </select>
+                </label>
+                <label class="advanced-field">Segmento / MCC
+                  <select id="offer-segment" name="segment"></select>
+                </label>
+                <label class="advanced-field">Tabela de recebimento
+                  <select id="offer-settlement" name="settlement"><option>D+0</option><option selected>D+1</option><option>D+30</option></select>
+                </label>
+                <label class="advanced-field">Faixa de TPV
+                  <select id="offer-tpv" name="tpv"></select>
+                </label>
+                <label class="advanced-field">Bandeira
+                  <select id="offer-brand" name="brand"><option>VISA</option><option>MASTERCARD</option><option>ELO</option><option>OUTROS</option></select>
+                </label>
+                <label class="advanced-field advanced-sale">Valor da venda
+                  <span class="advanced-input-affix"><span>R$</span><input id="offer-sale" name="sale" type="number" min="0.01" max="1000000" step="0.01" value="1000" inputmode="decimal" /></span>
+                </label>
+              </form>
+              <div class="advanced-result-heading"><div><span>CENÁRIO CONSULTADO</span><h4 id="offer-scenario"></h4></div><strong id="offer-sale-summary"></strong></div>
+              <div class="advanced-table-scroll" role="region" aria-label="Taxas e valores líquidos por modalidade" tabindex="0">
+                <table class="advanced-table">
+                  <thead><tr><th scope="col">Modalidade</th><th scope="col">Taxa (%)</th><th scope="col">Líquido da venda</th></tr></thead>
+                  <tbody id="offer-body"></tbody>
+                </table>
+              </div>
+              <p class="advanced-footnote" id="offer-note">Edite as taxas para incluir condições da sua proposta. As alterações ficam salvas neste navegador.</p>
+            </article>
+
+            <article class="reference-card market-card" aria-labelledby="market-title">
+              <div class="reference-card-heading">
+                <div><p class="eyebrow">COMPARATIVO ENTRE ADQUIRENTES</p><h3 id="market-title">Quem oferece a menor taxa?</h3></div>
+              </div>
+              <p class="market-intro">Compare EQUIS, PagSeguro (PGS) e STONE com os mesmos filtros de segmento, tabela, TPV e bandeira. Você também pode preencher os valores da sua proposta.</p>
+              <form class="advanced-filters market-filters" id="market-filters">
+                <label class="advanced-field">Segmento
+                  <select id="market-segment" name="segment"></select>
+                </label>
+                <label class="advanced-field">Tabela
+                  <select id="market-settlement" name="settlement"><option>D+0</option><option selected>D+1</option><option>D+30</option></select>
+                </label>
+                <label class="advanced-field">TPV
+                  <select id="market-tpv" name="tpv"></select>
+                </label>
+                <label class="advanced-field">Bandeira
+                  <select id="market-brand" name="brand"><option>VISA</option><option>MASTERCARD</option><option>ELO</option><option>OUTROS</option></select>
+                </label>
+              </form>
+              <div class="advanced-table-scroll market-table-scroll" role="region" aria-label="Comparação de taxas entre adquirentes" tabindex="0">
+                <table class="advanced-table market-table">
+                  <thead><tr><th scope="col">Modalidade</th><th scope="col">EQUIS</th><th scope="col">PagSeguro (PGS)</th><th scope="col">STONE</th></tr></thead>
+                  <tbody id="market-body"></tbody>
+                </table>
+              </div>
+              <p class="advanced-footnote" id="advanced-notice" role="status">Verde destaca a menor taxa disponível. As taxas preenchidas são salvas neste navegador.</p>
+            </article>
+          </div>
+          <p class="reference-disclaimer">A referência inicial cobre supermercados · D+1 · TPV menor que R$ 2 mil · Visa. Para outros filtros, informe as taxas da sua proposta. Valores são estimativas percentuais e não incluem custos adicionais ou antecipação fora da taxa cadastrada.</p>
+        </div>
+      </section>
+
       <section class="calculator section-pad" id="simulador" aria-labelledby="calculator-title">
         <div class="page-wrap calculator-layout">
           <div class="calculator-copy">
-            <p class="eyebrow section-eyebrow">02 / SIMULE O IMPACTO</p>
+            <p class="eyebrow section-eyebrow">03 / SIMULE O IMPACTO</p>
             <h2 id="calculator-title">Do percentual<br />para o <span>seu caixa.</span></h2>
             <p>Conte como você vende hoje. A gente mostra quanto fica com você depois das taxas.</p>
             <div class="calculator-note"><span aria-hidden="true">↗</span><p><strong>Uma conta fácil de entender.</strong><br />Estimativa baseada na taxa percentual informada, sem antecipação ou custos adicionais.</p></div>
@@ -128,7 +206,7 @@
       <section class="advantages section-pad" id="vantagens" aria-labelledby="advantages-title">
         <div class="page-wrap">
           <div class="section-heading heading-split">
-            <div><p class="eyebrow section-eyebrow">03 / O QUE PESA NA DECISÃO</p><h2 id="advantages-title">Taxa é só o começo.<br /><span>Contexto também conta.</span></h2></div>
+            <div><p class="eyebrow section-eyebrow">04 / O QUE PESA NA DECISÃO</p><h2 id="advantages-title">Taxa é só o começo.<br /><span>Contexto também conta.</span></h2></div>
             <p class="section-intro">A menor porcentagem ajuda, mas a escolha certa depende do seu jeito de vender. Compare cada modalidade e confira as condições da sua proposta.</p>
           </div>
           <div class="advantage-grid">

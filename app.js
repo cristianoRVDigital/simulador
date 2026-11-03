@@ -16,6 +16,51 @@ const modes = [
   { id: "pix", label: "Pix" },
 ];
 
+const advancedModes = [
+  "Débito", "À vista", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x", "10x", "11x", "12x", "Pix", "Tx. embutida",
+];
+const advancedProviders = ["EQUIS", "PGS", "STONE"];
+const advancedProviderNames = { EQUIS: "EQUIS", PGS: "PagSeguro (PGS)", STONE: "STONE" };
+const advancedSegments = [
+  ["5422", "AÇOUGUES"],
+  ["5949", "ARMARINHOS E LOJAS DE TECIDO"],
+  ["5994", "BANCA DE JORNAL E PROVEDOR DE NOTÍCIAS"],
+  ["5813", "BARES, PUBS E CASA NOTURNAS"],
+  ["5921", "CERVEJAS, VINHOS E LICORES (LOJA/CERVEJA/VINHO/LICOR)"],
+  ["5462", "CONFEITARIAS / PADARIAS"],
+  ["5697", "COSTUREIRAS E ALFAIATES"],
+  ["8999", "CPF"],
+  ["5912", "FARMÁCIAS"],
+  ["5814", "LANCHONETES DE COMIDAS RÁPIDAS (FAST FOOD)"],
+  ["5533", "LOJA DE PEÇAS E ACESSÓRIOS DE CARROS"],
+  ["5499", "LOJAS DE CONVENIÊNCIA"],
+  ["5211", "LOJAS DE MAT. DE CONSTRUÇÃO"],
+  ["7299", "OUTROS CNPJS (LOJAS DIVERSAS)"],
+  ["5812", "RESTAURANTES"],
+  ["5651", "ROUPAS MASCULINAS, FEMININAS E INFANTIS"],
+  ["7538", "SERVIÇOS PARA CARROS (NÃO CONCESSIONÁRIA)"],
+  ["5411", "SUPERMERCADOS"],
+  ["4812", "TELEFONIA"],
+];
+const advancedTpvRanges = [
+  ["LT2", "MENOR 2 MIL"],
+  ["2TO5", "ENTRE 2 A 5 MIL"],
+  ["5TO15", "ENTRE 5 MIL E 15 MIL"],
+  ["GT15", "MAIOR QUE 15 MIL"],
+  ["NA", "NÃO APLICA"],
+  ["PROMO", "PROMOCIONAL"],
+];
+const referenceRates = {
+  EQUIS: [1.67, 5.23, 6.09, 6.86, 7.62, 8.36, 9.10, 9.63, 10.65, 11.37, 12.07, 12.78, 13.47, 0.80, 1.65],
+  PGS: [1.67, 5.23, 6.09, 6.86, 7.62, 8.36, 9.10, 9.93, 10.65, 11.37, 12.07, 12.78, 13.47, 0.80, 1.59],
+  STONE: [0.89, 3.45, 4.55, 5.28, 6.01, 6.74, 7.48, 8.42, 9.15, 9.88, 10.61, 11.34, 12.07, 0.79, 1.50],
+};
+const advancedStorageKey = "rv-compare-advanced-v1";
+const referenceScenarioKey = ["5411", "D+1", "LT2", "VISA"].join("|");
+const advancedScenarios = {
+  [referenceScenarioKey]: Object.fromEntries(advancedProviders.map((provider) => [provider, [...referenceRates[provider]]])),
+};
+
 const storageKey = "rv-compare-rates-v1";
 const head = document.querySelector("#rates-head");
 const body = document.querySelector("#rates-body");
@@ -139,6 +184,216 @@ function onRateInput(event) {
   calculate();
 }
 
+function advancedScenarioKey(prefix) {
+  return [
+    document.querySelector(`#${prefix}-segment`).value,
+    document.querySelector(`#${prefix}-settlement`).value,
+    document.querySelector(`#${prefix}-tpv`).value,
+    document.querySelector(`#${prefix}-brand`).value,
+  ].join("|");
+}
+
+function getAdvancedRates(scenarioKey) {
+  if (!advancedScenarios[scenarioKey]) {
+    advancedScenarios[scenarioKey] = Object.fromEntries(advancedProviders.map((provider) => [provider, Array(advancedModes.length).fill(null)]));
+  }
+  return advancedScenarios[scenarioKey];
+}
+
+function loadAdvancedRates() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(advancedStorageKey));
+    if (!saved || typeof saved !== "object" || Array.isArray(saved)) return;
+    Object.entries(saved).forEach(([scenarioKey, providers]) => {
+      if (!providers || typeof providers !== "object" || Array.isArray(providers)) return;
+      const validProviders = {};
+      advancedProviders.forEach((provider) => {
+        const rates = providers[provider];
+        if (Array.isArray(rates) && rates.length === advancedModes.length && rates.every((rate) => rate === null || (Number.isFinite(rate) && rate >= 0 && rate <= 100))) {
+          validProviders[provider] = rates;
+        }
+      });
+      if (Object.keys(validProviders).length) {
+        advancedScenarios[scenarioKey] = { ...getAdvancedRates(scenarioKey), ...validProviders };
+      }
+    });
+  } catch {
+    document.querySelector("#advanced-notice").textContent = "Não foi possível carregar as taxas salvas. Você pode informar os valores novamente.";
+  }
+}
+
+function saveAdvancedRates() {
+  try {
+    localStorage.setItem(advancedStorageKey, JSON.stringify(advancedScenarios));
+    document.querySelector("#advanced-notice").textContent = "Taxas salvas neste navegador.";
+    return true;
+  } catch {
+    document.querySelector("#advanced-notice").textContent = "Não foi possível salvar. Verifique as configurações do navegador.";
+    return false;
+  }
+}
+
+function formatCurrency(value) {
+  return currency.format(value);
+}
+
+function formatAdvancedRate(rate) {
+  return rate === null ? "" : rate.toFixed(2);
+}
+
+function createAdvancedRateInput(provider, modeIndex, scenarioKey, isMarket) {
+  const rate = getAdvancedRates(scenarioKey)[provider][modeIndex];
+  const input = document.createElement("input");
+  input.type = "number";
+  input.min = "0";
+  input.max = "100";
+  input.step = "0.01";
+  input.inputMode = "decimal";
+  input.className = `advanced-rate-input${isMarket ? " market-rate-input" : ""}`;
+  input.setAttribute("aria-label", `Taxa ${advancedModes[modeIndex]} ${advancedProviderNames[provider]}, em porcentagem`);
+  input.dataset.advancedProvider = provider;
+  input.dataset.advancedMode = String(modeIndex);
+  input.dataset.scenarioKey = scenarioKey;
+  input.value = formatAdvancedRate(rate);
+  return input;
+}
+
+function renderOfferTable() {
+  const scenarioKey = advancedScenarioKey("offer");
+  const provider = document.querySelector("#offer-acquirer").value;
+  const body = document.querySelector("#offer-body");
+  document.querySelector("#offer-scenario").textContent = `${advancedProviderNames[provider]} · ${document.querySelector("#offer-brand").value}`;
+  body.replaceChildren(...advancedModes.map((mode, modeIndex) => {
+    const row = document.createElement("tr");
+    const heading = document.createElement("th");
+    heading.scope = "row";
+    heading.textContent = mode;
+    const rateCell = document.createElement("td");
+    rateCell.append(createAdvancedRateInput(provider, modeIndex, scenarioKey, false), document.createTextNode(" %"));
+    const netCell = document.createElement("td");
+    netCell.dataset.offerNetFor = `${provider}-${modeIndex}`;
+    row.append(heading, rateCell, netCell);
+    return row;
+  }));
+}
+
+function renderMarketTable() {
+  const scenarioKey = advancedScenarioKey("market");
+  const body = document.querySelector("#market-body");
+  body.replaceChildren(...advancedModes.map((mode, modeIndex) => {
+    const row = document.createElement("tr");
+    const heading = document.createElement("th");
+    heading.scope = "row";
+    heading.textContent = mode;
+    row.append(heading);
+    advancedProviders.forEach((provider) => {
+      const cell = document.createElement("td");
+      cell.dataset.marketProvider = provider;
+      cell.dataset.marketMode = String(modeIndex);
+      cell.append(createAdvancedRateInput(provider, modeIndex, scenarioKey, true));
+      const best = document.createElement("span");
+      best.className = "best-rate-label";
+      best.textContent = "Menor";
+      best.hidden = true;
+      cell.append(best);
+      row.append(cell);
+    });
+    return row;
+  }));
+}
+
+function updateAdvancedResults() {
+  const rawSale = document.querySelector("#offer-sale").value;
+  const sale = rawSale === "" ? null : Number(rawSale);
+  const saleIsValid = sale !== null && Number.isFinite(sale) && sale > 0 && sale <= 1000000;
+  document.querySelector("#offer-sale-summary").textContent = saleIsValid ? `Venda de ${formatCurrency(sale)}` : "Informe um valor válido";
+
+  document.querySelectorAll(".advanced-rate-input").forEach((input) => {
+    const { advancedProvider: provider, advancedMode: modeIndex, scenarioKey } = input.dataset;
+    const rate = getAdvancedRates(scenarioKey)[provider][Number(modeIndex)];
+    if (input !== document.activeElement) input.value = formatAdvancedRate(rate);
+    if (input.classList.contains("market-rate-input")) return;
+    const net = input.closest("tr").querySelector("[data-offer-net-for]");
+    net.textContent = saleIsValid && rate !== null ? formatCurrency(sale * (1 - rate / 100)) : "—";
+  });
+  updateAdvancedWinners();
+}
+
+function updateAdvancedWinners() {
+  document.querySelectorAll("#market-body tr").forEach((row) => {
+    const cells = [...row.querySelectorAll("[data-market-provider]")];
+    const available = cells.map((cell) => {
+      const input = cell.querySelector("input");
+      return input.value === "" ? null : Number(input.value);
+    }).filter((rate) => Number.isFinite(rate) && rate >= 0 && rate <= 100);
+    const minimum = available.length ? Math.min(...available) : null;
+    cells.forEach((cell) => {
+      const input = cell.querySelector("input");
+      const isBest = minimum !== null && input.value !== "" && Number(input.value) === minimum;
+      input.classList.toggle("is-best", isBest);
+      cell.querySelector(".best-rate-label").hidden = !isBest;
+    });
+  });
+
+  const offerInput = document.querySelector("#offer-body .advanced-rate-input");
+  if (!offerInput) return;
+  const offerProvider = offerInput.dataset.advancedProvider;
+  const modeIndex = offerInput.dataset.advancedMode;
+  const matchingMarketInput = [...document.querySelectorAll("#market-body .market-rate-input")]
+    .find((input) => input.dataset.advancedProvider === offerProvider && input.dataset.advancedMode === modeIndex);
+  offerInput.classList.toggle("is-best", Boolean(matchingMarketInput?.classList.contains("is-best")));
+}
+
+function renderAdvanced() {
+  renderOfferTable();
+  renderMarketTable();
+  updateAdvancedResults();
+}
+
+function initializeAdvancedFilters() {
+  ["offer-segment", "market-segment"].forEach((id) => {
+    const select = document.querySelector(`#${id}`);
+    select.replaceChildren(...advancedSegments.map(([code, label]) => {
+      const option = new Option(`${code} - ${label}`, code);
+      option.selected = code === "5411";
+      return option;
+    }));
+  });
+  ["offer-tpv", "market-tpv"].forEach((id) => {
+    const select = document.querySelector(`#${id}`);
+    select.replaceChildren(...advancedTpvRanges.map(([value, label]) => {
+      const option = new Option(label, value);
+      option.selected = value === "LT2";
+      return option;
+    }));
+  });
+
+  ["offer-filters", "market-filters"].forEach((id) => {
+    const form = document.querySelector(`#${id}`);
+    form.addEventListener("change", renderAdvanced);
+  });
+  document.querySelector("#offer-sale").addEventListener("input", updateAdvancedResults);
+  document.querySelector("#consulta").addEventListener("input", (event) => {
+    const input = event.target.closest(".advanced-rate-input");
+    if (!input) return;
+    const raw = input.value;
+    const rate = raw === "" ? null : Number(raw);
+    if (rate !== null && (!Number.isFinite(rate) || rate < 0 || rate > 100)) {
+      input.setCustomValidity("Informe uma taxa entre 0 e 100%.");
+      document.querySelector("#advanced-notice").textContent = "Informe uma taxa entre 0 e 100%.";
+      return;
+    }
+
+    input.setCustomValidity("");
+    const { advancedProvider: provider, advancedMode: modeIndex, scenarioKey } = input.dataset;
+    getAdvancedRates(scenarioKey)[provider][Number(modeIndex)] = rate;
+    saveAdvancedRates();
+    updateAdvancedResults();
+  });
+  loadAdvancedRates();
+  renderAdvanced();
+}
+
 document.querySelector("#reset-rates").addEventListener("click", () => {
   localStorage.removeItem(storageKey);
   window.location.reload();
@@ -221,3 +476,4 @@ loadRates();
 populateSelects();
 renderTable();
 calculate();
+initializeAdvancedFilters();
