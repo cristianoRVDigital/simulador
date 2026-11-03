@@ -4,6 +4,8 @@ const operators = [
   { id: "stone", name: "Stone", mark: "ST", rates: Array(7).fill(null) },
   { id: "pagbank", name: "PagBank", mark: "PG", rates: Array(7).fill(null) },
   { id: "cielo", name: "Cielo", mark: "CI", rates: Array(7).fill(null) },
+  { id: "equis", name: "EQUIS", mark: "EQ", rates: Array(7).fill(null) },
+  { id: "pgs", name: "PagSeguro (PGS)", mark: "PGS", rates: Array(7).fill(null) },
 ];
 
 const modes = [
@@ -76,12 +78,16 @@ let noticeTimeout;
 function loadRates() {
   try {
     const saved = JSON.parse(localStorage.getItem(storageKey));
-    if (!Array.isArray(saved) || saved.length !== operators.length) return;
-    saved.forEach((operator, operatorIndex) => {
-      if (!Array.isArray(operator.rates)) return;
-      operators[operatorIndex].rates = operators[operatorIndex].rates.map((defaultRate, modeIndex) => {
-        const value = operator.rates[modeIndex];
-        return value === null || value === "" || value === undefined ? null : Number(value);
+    if (!Array.isArray(saved)) return;
+    const savedById = new Map(saved.filter((item) => item && typeof item.id === "string").map((item) => [item.id, item]));
+    operators.forEach((operator) => {
+      const savedOperator = savedById.get(operator.id);
+      if (!Array.isArray(savedOperator?.rates)) return;
+      operator.rates = operator.rates.map((defaultRate, modeIndex) => {
+        const value = savedOperator.rates[modeIndex];
+        if (value === null || value === "" || value === undefined) return null;
+        const rate = Number(value);
+        return Number.isFinite(rate) && rate >= 0 && rate <= 100 ? rate : defaultRate;
       });
     });
   } catch {
@@ -93,13 +99,15 @@ function saveRates() {
   try {
     localStorage.setItem(storageKey, JSON.stringify(operators.map(({ id, rates }) => ({ id, rates }))));
     saveNotice.textContent = "Taxas salvas neste navegador.";
+    clearTimeout(noticeTimeout);
+    noticeTimeout = setTimeout(() => {
+      saveNotice.textContent = "Suas taxas são salvas automaticamente neste navegador.";
+    }, 2400);
+    return true;
   } catch {
     saveNotice.textContent = "Não foi possível salvar. Verifique as configurações do navegador.";
+    return false;
   }
-  clearTimeout(noticeTimeout);
-  noticeTimeout = setTimeout(() => {
-    saveNotice.textContent = "Suas taxas são salvas automaticamente neste navegador.";
-  }, 2400);
 }
 
 function formatRate(rate) {
@@ -182,6 +190,73 @@ function onRateInput(event) {
   const minimum = rates.length ? Math.min(...rates) : null;
   rowInputs.forEach((rowInput) => rowInput.classList.toggle("is-winner", rowInput.value !== "" && minimum !== null && Number(rowInput.value) === minimum));
   calculate();
+}
+
+function importAdvancedRates() {
+  const notice = document.querySelector("#import-notice");
+  const scenarioKey = advancedScenarioKey("market");
+  const scenarioRates = advancedScenarios[scenarioKey];
+  if (!scenarioRates) {
+    notice.hidden = false;
+    notice.textContent = "Não há taxas disponíveis para o cenário selecionado. Confira a consulta avançada.";
+    return;
+  }
+
+  const brand = document.querySelector("#market-brand").value;
+  const modeMappings = [
+    ...(brand === "ELO" ? [[0, 1]] : ["VISA", "MASTERCARD"].includes(brand) ? [[0, 0]] : []),
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [13, 6],
+  ];
+  const operatorMappings = [
+    ["EQUIS", "equis"],
+    ["PGS", "pgs"],
+    ["STONE", "stone"],
+  ];
+  let imported = 0;
+  let preserved = 0;
+  let unavailable = 0;
+
+  operatorMappings.forEach(([sourceId, targetId]) => {
+    const target = selectedOperator(targetId);
+    scenarioRates[sourceId].forEach((rate, sourceModeIndex) => {
+      const mapping = modeMappings.find(([advancedMode]) => advancedMode === sourceModeIndex);
+      if (!mapping) return;
+      const [, targetModeIndex] = mapping;
+      if (rate === null || !Number.isFinite(rate)) {
+        unavailable++;
+        return;
+      }
+      if (target.rates[targetModeIndex] !== null) {
+        preserved++;
+        return;
+      }
+      target.rates[targetModeIndex] = rate;
+      imported++;
+    });
+  });
+
+  let saved = true;
+  if (imported > 0) {
+    saved = saveRates();
+    renderTable();
+    calculate();
+  }
+
+  const segment = document.querySelector("#market-segment").selectedOptions[0].textContent;
+  const settlement = document.querySelector("#market-settlement").value;
+  const tpv = document.querySelector("#market-tpv").selectedOptions[0].textContent;
+  const scenario = `${segment} · ${settlement} · ${tpv} · ${brand}`;
+  const messages = [`${imported} taxa(s) importada(s) para EQUIS, PagSeguro (PGS) e Stone.`];
+  if (preserved) messages.push(`${preserved} valor(es) existente(s) foram preservados.`);
+  if (unavailable) messages.push(`${unavailable} taxa(s) não estavam disponíveis.`);
+  if (!saved) messages.push("Não foi possível salvar as alterações neste navegador.");
+  messages.push(`Cenário: ${scenario}.`);
+  notice.hidden = false;
+  notice.textContent = messages.join(" ");
 }
 
 function advancedScenarioKey(prefix) {
@@ -398,6 +473,7 @@ document.querySelector("#reset-rates").addEventListener("click", () => {
   localStorage.removeItem(storageKey);
   window.location.reload();
 });
+document.querySelector("#import-advanced-rates").addEventListener("click", importAdvancedRates);
 
 providerSelect.addEventListener("change", () => {
   const previousComparison = compareSelect.value;

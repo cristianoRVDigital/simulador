@@ -100,11 +100,16 @@ h1, h2, h3 { font-family: var(--font-display); }
 .section-eyebrow { margin-bottom: 15px; }
 .section-heading h2, .calculator-copy h2, .contact-inner h2 { margin: 0; font-size: clamp(35px, 4vw, 50px); font-weight: 700; line-height: 1.14; letter-spacing: 0; }
 .section-intro { max-width: 390px; margin: 0 0 4px; color: #64716b; font-size: 14px; line-height: 1.8; }
-.table-toolbar { min-height: 45px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); color: #66736c; font-size: 10px; }
+.table-toolbar { min-height: 45px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); color: #66736c; font-size: 10px; }
 .table-toolbar > div { display: flex; align-items: center; gap: 7px; }
+.table-actions { display: flex; align-items: center; justify-content: flex-end; gap: 16px; }
 .legend-dot { width: 7px; height: 7px; display: inline-block; border-radius: 50%; background: var(--green); }
 .text-button { padding: 8px 0; border: 0; background: transparent; color: var(--green); cursor: pointer; font-size: 10px; font-weight: 700; }
 .text-button span { padding-left: 5px; font-size: 14px; }
+.import-rates-button { padding: 9px 13px; border: 1px solid #cde4d5; border-radius: var(--radius-control); background: var(--mint); transition: background .2s ease, transform .2s ease; }
+.import-rates-button:hover { transform: translateY(-1px); background: #d3ecde; }
+.import-notice { margin: 0 0 12px; padding: 10px 13px; border: 1px solid #d5e9db; border-radius: var(--radius-control); background: #f0f8f2; color: #3d6650; font-size: 11px; line-height: 1.55; }
+.import-notice[hidden] { display: none; }
 .table-scroll { overflow: auto; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--white); box-shadow: var(--shadow-card); scrollbar-color: #b6c8bd transparent; }
 .rates-table { width: 100%; min-width: 760px; border-collapse: collapse; text-align: left; }
 .rates-table th, .rates-table td { min-width: 126px; padding: 12px 15px; border-bottom: 1px solid #ebede7; }
@@ -313,8 +318,11 @@ h1, h2, h3 { font-family: var(--font-display); }
   .section-heading { margin-bottom: 27px; }
   .section-heading h2, .calculator-copy h2 { font-size: 37px; }
   .section-intro { font-size: 12px; }
-  .table-toolbar { align-items: flex-start; gap: 10px; padding-block: 10px; font-size: 9px; }
+  .table-toolbar { align-items: flex-start; flex-wrap: wrap; gap: 8px; padding-block: 10px; font-size: 9px; }
+  .table-actions { flex: 1 1 100%; justify-content: space-between; gap: 8px; }
   .text-button { text-align: right; font-size: 9px; }
+  .import-rates-button { padding: 8px 10px; }
+  .import-notice { font-size: 10px; }
   .rates-table th, .rates-table td { min-width: 116px; padding-inline: 10px; }
   .rates-table thead th:first-child, .rates-table tbody th { min-width: 155px; }
   .rates-table tbody th { font-size: 10px; }

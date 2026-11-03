@@ -78,7 +78,14 @@
             <div><p class="eyebrow section-eyebrow">01 / COMPARATIVO DIRETO</p><h2 id="comparison-title">Cada taxa conta.<br /><span>Compare lado a lado.</span></h2></div>
             <p class="section-intro">Veja quanto cada operadora cobra por venda. Os campos são editáveis: cadastre as condições que recebeu e encontre a menor taxa do seu cenário.</p>
           </div>
-          <div class="table-toolbar"><div><span class="legend-dot"></span> Menor taxa informada</div><button class="text-button" id="reset-rates" type="button">Restaurar taxas de referência <span aria-hidden="true">↺</span></button></div>
+          <div class="table-toolbar">
+            <div><span class="legend-dot"></span> Menor taxa informada</div>
+            <div class="table-actions">
+              <button class="text-button import-rates-button" id="import-advanced-rates" type="button">Puxar taxas da consulta <span aria-hidden="true">↓</span></button>
+              <button class="text-button" id="reset-rates" type="button">Restaurar taxas de referência <span aria-hidden="true">↺</span></button>
+            </div>
+          </div>
+          <p class="import-notice" id="import-notice" role="status" aria-live="polite" hidden></p>
           <div class="table-scroll" role="region" aria-label="Tabela comparativa de taxas. Deslize horizontalmente em telas pequenas." tabindex="0">
             <table class="rates-table">
               <thead><tr id="rates-head"><th scope="col">OPERAÇÃO</th></tr></thead>
