@@ -445,7 +445,15 @@ function initializeAdvancedFilters() {
 
   ["offer-filters", "market-filters"].forEach((id) => {
     const form = document.querySelector(`#${id}`);
-    form.addEventListener("change", renderAdvanced);
+    form.addEventListener("change", (event) => {
+      const control = event.target;
+      if (control instanceof HTMLSelectElement && control.name) {
+        const peerPrefix = id === "offer-filters" ? "market" : "offer";
+        const peer = document.querySelector(`#${peerPrefix}-${control.name}`);
+        if (peer && peer.value !== control.value) peer.value = control.value;
+      }
+      renderAdvanced();
+    });
   });
   document.querySelector("#offer-sale").addEventListener("input", updateAdvancedResults);
   document.querySelector("#consulta").addEventListener("input", (event) => {

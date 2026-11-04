@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f6f5f0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="description" content="Compare taxas de maquininhas e descubra quanto sobra no caixa do seu negócio. Simulação gratuita e personalizada." />
     <title>RV Compare | Taxa menor. Mais dinheiro no caixa.</title>
@@ -190,7 +191,7 @@
                 <select id="mode-select" name="mode"></select>
               </label>
               <label class="field">Valor médio por venda
-                <span class="input-affix"><span>R$</span><input id="sale-amount" name="saleAmount" type="number" min="1" max="1000000" step="10" value="1000" inputmode="decimal" /></span>
+                <span class="input-affix"><span>R$</span><input id="sale-amount" name="saleAmount" type="number" min="1" max="1000000" step="0.01" value="1000" inputmode="decimal" /></span>
               </label>
               <label class="field">Vendas por mês
                 <span class="input-affix"><input id="monthly-sales" name="monthlySales" type="number" min="1" max="1000000" step="1" value="80" inputmode="numeric" /><span>vendas</span></span>
