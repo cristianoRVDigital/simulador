@@ -1,11 +1,8 @@
 const operators = [
   { id: "rv", name: "RV Pay", mark: "RV", rates: [0.9, 1.62, 3.13, 4.68, 5.47, 6.24, null] },
-  { id: "infinite", name: "InfiniteTap", mark: "∞", rates: [1.37, null, null, null, null, null, null] },
   { id: "stone", name: "Stone", mark: "ST", rates: Array(7).fill(null) },
-  { id: "pagbank", name: "PagBank", mark: "PG", rates: Array(7).fill(null) },
-  { id: "cielo", name: "Cielo", mark: "CI", rates: Array(7).fill(null) },
-  { id: "equis", name: "EQUIS", mark: "EQ", rates: Array(7).fill(null) },
   { id: "pgs", name: "PagSeguro (PGS)", mark: "PGS", rates: Array(7).fill(null) },
+  { id: "custom", name: "Minha taxa", mark: "EU", rates: Array(7).fill(null) },
 ];
 
 const modes = [
