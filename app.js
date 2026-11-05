@@ -88,7 +88,7 @@ function loadRates() {
       });
     });
   } catch {
-    localStorage.removeItem(storageKey);
+    saveNotice.textContent = "Não foi possível carregar as taxas salvas. Os valores de referência foram mantidos.";
   }
 }
 
@@ -130,7 +130,9 @@ function renderTable() {
 
   body.querySelectorAll(".rate-input").forEach((input) => {
     input.addEventListener("input", onRateInput);
-    input.addEventListener("change", saveRates);
+    input.addEventListener("change", (event) => {
+      if (event.currentTarget.validity.valid) saveRates();
+    });
   });
 }
 
@@ -165,12 +167,13 @@ function calculate() {
   if (rate === null) {
     savings.textContent = `Preencha a taxa de ${provider.name} para calcular esta projeção.`;
   } else if (compareRate === null) {
-    savings.textContent = `Cadastre a taxa de ${comparison.name} para comparar sua economia.`;
+    savings.textContent = `Preencha a taxa de ${comparison.name} para comparar o custo mensal das duas operadoras.`;
   } else {
     const difference = gross * (compareRate - rate) / 100;
-    if (difference > 0) savings.textContent = `Você economiza ${currency.format(difference)} por mês em relação à ${comparison.name}.`;
-    else if (difference < 0) savings.textContent = `A ${comparison.name} representa ${currency.format(Math.abs(difference))} a menos por mês neste cenário.`;
-    else savings.textContent = `As duas operadoras têm o mesmo custo nesta modalidade.`;
+    const ratesCompared = `Taxas comparadas: ${formatRate(rate)}% (${provider.name}) e ${formatRate(compareRate)}% (${comparison.name}).`;
+    if (difference > 0) savings.textContent = `Com ${provider.name}, você paga ${currency.format(difference)} a menos em taxas por mês do que com ${comparison.name}. ${ratesCompared}`;
+    else if (difference < 0) savings.textContent = `Com ${comparison.name}, você paga ${currency.format(Math.abs(difference))} a menos em taxas por mês do que com ${provider.name}. ${ratesCompared}`;
+    else savings.textContent = `As duas operadoras têm o mesmo custo mensal neste cenário. ${ratesCompared}`;
   }
 }
 
@@ -180,7 +183,13 @@ function onRateInput(event) {
   const modeIndex = Number(input.dataset.mode);
   const raw = input.value;
   const value = raw === "" ? null : Number(raw);
-  if (value !== null && (!Number.isFinite(value) || value < 0 || value > 100)) return;
+  input.setCustomValidity("");
+  if (!input.validity.valid || (value !== null && (!Number.isFinite(value) || value < 0 || value > 100))) {
+    input.setCustomValidity("Informe uma taxa entre 0 e 100%, com até duas casas decimais.");
+    clearTimeout(noticeTimeout);
+    saveNotice.textContent = "Informe uma taxa entre 0 e 100%, com até duas casas decimais.";
+    return;
+  }
   operators[operatorIndex].rates[modeIndex] = value;
   const rowInputs = [...body.querySelectorAll(`.rate-input[data-mode="${modeIndex}"]`)];
   const rates = rowInputs.map((rowInput) => rowInput.value === "" ? null : Number(rowInput.value)).filter((rate) => rate !== null && Number.isFinite(rate) && rate >= 0);
@@ -209,7 +218,6 @@ function importAdvancedRates() {
     [13, 6],
   ];
   const operatorMappings = [
-    ["EQUIS", "equis"],
     ["PGS", "pgs"],
     ["STONE", "stone"],
   ];
@@ -247,7 +255,7 @@ function importAdvancedRates() {
   const settlement = document.querySelector("#market-settlement").value;
   const tpv = document.querySelector("#market-tpv").selectedOptions[0].textContent;
   const scenario = `${segment} · ${settlement} · ${tpv} · ${brand}`;
-  const messages = [`${imported} taxa(s) importada(s) para EQUIS, PagSeguro (PGS) e Stone.`];
+  const messages = [`${imported} taxa(s) importada(s) para PagSeguro (PGS) e Stone.`];
   if (preserved) messages.push(`${preserved} valor(es) existente(s) foram preservados.`);
   if (unavailable) messages.push(`${unavailable} taxa(s) não estavam disponíveis.`);
   if (!saved) messages.push("Não foi possível salvar as alterações neste navegador.");
@@ -458,13 +466,13 @@ function initializeAdvancedFilters() {
     if (!input) return;
     const raw = input.value;
     const rate = raw === "" ? null : Number(raw);
-    if (rate !== null && (!Number.isFinite(rate) || rate < 0 || rate > 100)) {
-      input.setCustomValidity("Informe uma taxa entre 0 e 100%.");
-      document.querySelector("#advanced-notice").textContent = "Informe uma taxa entre 0 e 100%.";
+    input.setCustomValidity("");
+    if (!input.validity.valid || (rate !== null && (!Number.isFinite(rate) || rate < 0 || rate > 100))) {
+      input.setCustomValidity("Informe uma taxa entre 0 e 100%, com até duas casas decimais.");
+      document.querySelector("#advanced-notice").textContent = "Informe uma taxa entre 0 e 100%, com até duas casas decimais.";
       return;
     }
 
-    input.setCustomValidity("");
     const { advancedProvider: provider, advancedMode: modeIndex, scenarioKey } = input.dataset;
     getAdvancedRates(scenarioKey)[provider][Number(modeIndex)] = rate;
     saveAdvancedRates();
@@ -475,8 +483,12 @@ function initializeAdvancedFilters() {
 }
 
 document.querySelector("#reset-rates").addEventListener("click", () => {
-  localStorage.removeItem(storageKey);
-  window.location.reload();
+  try {
+    localStorage.removeItem(storageKey);
+    window.location.reload();
+  } catch {
+    saveNotice.textContent = "Não foi possível restaurar as taxas. Verifique as configurações do navegador.";
+  }
 });
 document.querySelector("#import-advanced-rates").addEventListener("click", importAdvancedRates);
 
@@ -514,7 +526,6 @@ let deferredInstallPrompt = null;
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault();
   deferredInstallPrompt = event;
-  installButton.classList.add("is-installable");
 });
 
 installButton.addEventListener("click", async () => {
@@ -531,9 +542,15 @@ installButton.addEventListener("click", async () => {
     return;
   }
 
-  deferredInstallPrompt.prompt();
-  await deferredInstallPrompt.userChoice;
-  deferredInstallPrompt = null;
+  try {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+  } catch {
+    installMessage.textContent = "Não foi possível concluir a instalação. Tente novamente pelo menu do navegador.";
+    installDialog.showModal();
+  } finally {
+    deferredInstallPrompt = null;
+  }
 });
 
 document.querySelectorAll(".install-dialog-close, .install-dialog-confirm").forEach((button) => {
@@ -550,7 +567,9 @@ window.addEventListener("appinstalled", () => {
 });
 
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch((error) => {
+    console.error("Não foi possível registrar o service worker do RV Compare.", error);
+  }));
 }
 
 loadRates();

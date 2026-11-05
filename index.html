@@ -179,10 +179,11 @@
           <div class="calculator-copy">
             <p class="eyebrow section-eyebrow">03 / SIMULE O IMPACTO</p>
             <h2 id="calculator-title">Do percentual<br />para o <span>seu caixa.</span></h2>
-            <p>Conte como você vende hoje. A gente mostra quanto fica com você depois das taxas.</p>
-            <div class="calculator-note"><span aria-hidden="true">↗</span><p><strong>Uma conta fácil de entender.</strong><br />Estimativa baseada na taxa percentual informada, sem antecipação ou custos adicionais.</p></div>
+            <p>Informe o valor médio por venda e quantas vendas faz no mês. Veja o faturamento, as taxas estimadas e quanto sobra para você.</p>
+            <div class="calculator-note"><span aria-hidden="true">↗</span><p><strong>Como fazemos a conta</strong><br />Faturamento mensal × (taxa cadastrada ÷ 100). A estimativa não inclui antecipação nem outras cobranças.</p></div>
           </div>
           <div class="calculator-workspace">
+            <p class="calculator-form-hint">Para comparar as operadoras, usamos o mesmo valor por venda e a mesma quantidade de vendas por mês.</p>
             <form id="calculator-form" class="calculator-form">
               <label class="field field-wide">Operadora
                 <select id="provider-select" name="provider"></select>
@@ -196,14 +197,14 @@
               <label class="field">Vendas por mês
                 <span class="input-affix"><input id="monthly-sales" name="monthlySales" type="number" min="1" max="1000000" step="1" value="80" inputmode="numeric" /><span>vendas</span></span>
               </label>
-              <label class="field field-wide">Comparar economia com
+              <label class="field field-wide">Comparar com
                 <select id="compare-select" name="compareProvider"></select>
               </label>
             </form>
             <div class="results-panel" aria-live="polite" aria-atomic="true">
-              <div class="results-top"><span>SUA PROJEÇÃO MENSAL</span><span class="result-rate" id="result-rate">—</span></div>
-              <div class="results-main"><span class="result-label" id="result-provider">RV Pay · Débito Visa / Mastercard</span><strong id="result-fees">R$ 0,00</strong><small>em taxas estimadas</small></div>
-              <div class="results-breakdown"><div><span>Faturamento bruto</span><strong id="result-gross">R$ 0,00</strong></div><div><span>Você recebe</span><strong id="result-net">R$ 0,00</strong></div></div>
+              <div class="results-top"><span>RESULTADO MENSAL ESTIMADO</span><span class="result-rate" id="result-rate">—</span></div>
+              <div class="results-main"><span class="result-label" id="result-provider">RV Pay · Débito Visa / Mastercard</span><strong id="result-fees">R$ 0,00</strong><small>de taxas estimadas no mês</small></div>
+              <div class="results-breakdown"><div><span>Faturamento bruto mensal</span><strong id="result-gross">R$ 0,00</strong></div><div><span>Líquido estimado</span><strong id="result-net">R$ 0,00</strong></div></div>
               <p class="savings-callout" id="result-savings">Cadastre a taxa da outra operadora para comparar sua economia.</p>
             </div>
             <p class="save-notice" id="save-notice" role="status">Suas taxas são salvas automaticamente neste navegador.</p>
