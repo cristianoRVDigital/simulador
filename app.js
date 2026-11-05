@@ -1,19 +1,19 @@
 const operators = [
-  { id: "rv", name: "RV Pay", mark: "RV", rates: [0.9, 1.62, 3.13, 4.68, 5.47, 6.24, null] },
-  { id: "stone", name: "Stone", mark: "ST", rates: Array(7).fill(null) },
-  { id: "pgs", name: "PagSeguro (PGS)", mark: "PGS", rates: Array(7).fill(null) },
-  { id: "custom", name: "Minha taxa", mark: "EU", rates: Array(7).fill(null) },
+  { id: "rv", name: "RV Pay", mark: "RV", rates: [0.9, 3.13, 4.68, 5.47, 6.24, null] },
+  { id: "stone", name: "Stone", mark: "ST", rates: Array(6).fill(null) },
+  { id: "pgs", name: "PagSeguro (PGS)", mark: "PGS", rates: Array(6).fill(null) },
+  { id: "custom", name: "Minha taxa", mark: "EU", rates: Array(6).fill(null) },
 ];
 
 const modes = [
-  { id: "debit", label: "Débito Visa / Mastercard" },
-  { id: "debitElo", label: "Débito Elo" },
+  { id: "debit", label: "Débito" },
   { id: "credit", label: "Crédito à vista" },
   { id: "installment2", label: "Crédito 2x" },
   { id: "installment3", label: "Crédito 3x" },
   { id: "installment4", label: "Crédito 4x" },
   { id: "pix", label: "Pix" },
 ];
+const legacyModeIndexes = [0, 2, 3, 4, 5, 6];
 
 const advancedModes = [
   "Débito", "À vista", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x", "10x", "11x", "12x", "Pix", "Tx. embutida",
@@ -80,8 +80,11 @@ function loadRates() {
     operators.forEach((operator) => {
       const savedOperator = savedById.get(operator.id);
       if (!Array.isArray(savedOperator?.rates)) return;
+      const savedRates = savedOperator.rates.length === 7
+        ? legacyModeIndexes.map((legacyIndex) => savedOperator.rates[legacyIndex])
+        : savedOperator.rates;
       operator.rates = operator.rates.map((defaultRate, modeIndex) => {
-        const value = savedOperator.rates[modeIndex];
+        const value = savedRates[modeIndex];
         if (value === null || value === "" || value === undefined) return null;
         const rate = Number(value);
         return Number.isFinite(rate) && rate >= 0 && rate <= 100 ? rate : defaultRate;
@@ -210,7 +213,7 @@ function importAdvancedRates() {
 
   const brand = document.querySelector("#market-brand").value;
   const modeMappings = [
-    ...(brand === "ELO" ? [[0, 1]] : ["VISA", "MASTERCARD"].includes(brand) ? [[0, 0]] : []),
+    ...(brand === "ELO" || ["VISA", "MASTERCARD"].includes(brand) ? [[0, 0]] : []),
     [1, 2],
     [2, 3],
     [3, 4],
