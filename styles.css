@@ -220,8 +220,9 @@ h1, h2, h3 { font-family: var(--font-display); }
 .comparison-result-value { min-width: 0; display: grid; gap: 3px; }
 .comparison-result-value > span { color: #68766e; font-size: 11px; }
 .comparison-result-value > strong { overflow-wrap: anywhere; color: #24352e; font-family: var(--font-display); font-size: clamp(17px, 2vw, 21px); font-variant-numeric: tabular-nums; line-height: 1.3; }
-.comparison-result.is-best .comparison-result-fees > strong { color: #087354; }
-.comparison-result.is-higher .comparison-result-fees > strong { color: #a63b34; }
+.comparison-result-rate > strong { font-size: clamp(21px, 2.5vw, 27px); letter-spacing: -.025em; }
+.comparison-result.is-best .comparison-result-rate > strong, .comparison-result.is-best .comparison-result-fees > strong { color: #087354; }
+.comparison-result.is-higher .comparison-result-rate > strong, .comparison-result.is-higher .comparison-result-fees > strong { color: #a63b34; }
 .comparison-key { margin: 9px 0 0; color: #68766e; font-size: 11px; line-height: 1.5; }
 .results-breakdown { margin-top: 17px; padding-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; border-top: 1px solid #e9ebe5; }
 .results-breakdown div { display: grid; gap: 5px; }
@@ -377,7 +378,8 @@ h1, h2, h3 { font-family: var(--font-display); }
   .results-panel { margin-top: 15px; padding: 14px; }
   .rate-comparison { gap: 8px; }
   .comparison-result { padding: 11px 9px; gap: 10px; }
-  .comparison-result-value > strong { font-size: clamp(15px, 4.5vw, 19px); }
+  .comparison-result-rate > strong { font-size: clamp(19px, 5vw, 23px); }
+  .comparison-result-fees > strong { font-size: clamp(16px, 4.3vw, 19px); }
   .savings-callout { margin-top: 13px; padding: 12px; font-size: 15px; line-height: 1.55; }
   .save-notice { text-align: left; }
   .advantage-grid { grid-template-columns: 1fr; }
