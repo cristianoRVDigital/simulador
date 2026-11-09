@@ -131,6 +131,8 @@ h1, h2, h3 { font-family: var(--font-display); }
 
 .reference-section { background: linear-gradient(180deg, #edf4ef 0%, #f5f7f4 100%); }
 .reference-section .section-heading { margin-bottom: 36px; }
+.reference-section .heading-split { align-items: center; }
+.reference-section .section-eyebrow { margin-bottom: 0; }
 .reference-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
 .reference-card { min-width: 0; padding: 23px; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius-card); background: white; box-shadow: var(--shadow-card); }
 .reference-card-heading { min-height: 48px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -206,11 +208,21 @@ h1, h2, h3 { font-family: var(--font-display); }
 .input-affix input::-webkit-inner-spin-button, .input-affix input::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
 .results-panel { margin-top: 22px; padding: 22px; border: 1px solid #e4ebe6; border-radius: 13px; background: var(--white); box-shadow: 0 8px 24px rgba(28, 57, 43, .06); }
 .results-top { display: flex; align-items: center; justify-content: space-between; color: #76827b; font-size: 11px; font-weight: 700; letter-spacing: .8px; }
-.result-rate { padding: 6px 10px; border-radius: 999px; background: var(--mint); color: var(--green); font-size: 13px; letter-spacing: 0; }
-.results-main { margin-top: 15px; display: grid; }
-.result-label { color: #65716b; font-size: 14px; }
-.results-main strong { margin-top: 1px; color: var(--green-dark); font-family: var(--font-display); font-size: clamp(32px, 4vw, 42px); font-variant-numeric: tabular-nums; letter-spacing: -.03em; line-height: 1.2; }
-.results-main small { color: #68766e; font-size: 12px; }
+.rate-comparison { margin-top: 15px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+.comparison-result { min-width: 0; padding: 13px; display: grid; align-content: start; gap: 11px; border: 1px solid #e4ebe6; border-radius: 10px; background: #fff; }
+.comparison-result.is-best { border-color: #b9e1ca; background: #f0faf4; }
+.comparison-result.is-higher { border-color: #edc7c3; background: #fff4f3; }
+.comparison-result-top { min-width: 0; display: grid; gap: 8px; }
+.comparison-result-top > span:first-child { overflow-wrap: anywhere; color: #52635a; font-size: 12px; font-weight: 700; line-height: 1.4; }
+.comparison-result-status { width: fit-content; padding: 4px 8px; border-radius: 999px; background: #f0f3f1; color: #65716b; font-size: 10px; font-weight: 700; }
+.comparison-result.is-best .comparison-result-status { background: #dff2e7; color: #087354; }
+.comparison-result.is-higher .comparison-result-status { background: #fbe4e1; color: #a63b34; }
+.comparison-result-value { min-width: 0; display: grid; gap: 3px; }
+.comparison-result-value > span { color: #68766e; font-size: 11px; }
+.comparison-result-value > strong { overflow-wrap: anywhere; color: #24352e; font-family: var(--font-display); font-size: clamp(17px, 2vw, 21px); font-variant-numeric: tabular-nums; line-height: 1.3; }
+.comparison-result.is-best .comparison-result-fees > strong { color: #087354; }
+.comparison-result.is-higher .comparison-result-fees > strong { color: #a63b34; }
+.comparison-key { margin: 9px 0 0; color: #68766e; font-size: 11px; line-height: 1.5; }
 .results-breakdown { margin-top: 17px; padding-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; border-top: 1px solid #e9ebe5; }
 .results-breakdown div { display: grid; gap: 5px; }
 .results-breakdown span { color: #65716b; font-size: 12px; }
@@ -363,7 +375,9 @@ h1, h2, h3 { font-family: var(--font-display); }
   .field { font-size: 12px; }
   .field select, .input-affix { min-height: 44px; }
   .results-panel { margin-top: 15px; padding: 14px; }
-  .results-main strong { font-size: clamp(27px, 8vw, 34px); }
+  .rate-comparison { gap: 8px; }
+  .comparison-result { padding: 11px 9px; gap: 10px; }
+  .comparison-result-value > strong { font-size: clamp(15px, 4.5vw, 19px); }
   .savings-callout { margin-top: 13px; padding: 12px; font-size: 15px; line-height: 1.55; }
   .save-notice { text-align: left; }
   .advantage-grid { grid-template-columns: 1fr; }

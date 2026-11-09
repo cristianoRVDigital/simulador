@@ -1,4 +1,4 @@
-const CACHE_NAME = "rv-compare-v11";
+const CACHE_NAME = "rv-compare-v12";
 const APP_SHELL = [
   "./",
   "./index.html",

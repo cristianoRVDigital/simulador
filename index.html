@@ -97,10 +97,10 @@
         </div>
       </section>
 
-      <section class="reference-section section-pad" id="consulta" aria-labelledby="reference-title">
+      <section class="reference-section section-pad" id="consulta" aria-labelledby="reference-label">
         <div class="page-wrap">
           <div class="section-heading heading-split">
-            <div><p class="eyebrow section-eyebrow">02 / CONSULTA AVANÇADA</p><h2 id="reference-title">Taxa certa para<br /><span>o seu cenário.</span></h2></div>
+            <div><p class="eyebrow section-eyebrow" id="reference-label">02 / CONSULTA AVANÇADA</p></div>
             <p class="section-intro">Filtre por adquirente, segmento, prazo, faixa de TPV e bandeira. Veja o líquido por venda e compare as taxas lado a lado.</p>
           </div>
 
@@ -202,8 +202,20 @@
               </label>
             </form>
             <div class="results-panel" aria-live="polite" aria-atomic="true">
-              <div class="results-top"><span>RESULTADO MENSAL ESTIMADO</span><span class="result-rate" id="result-rate">—</span></div>
-              <div class="results-main"><span class="result-label" id="result-provider">RV Pay · Débito</span><strong id="result-fees">R$ 0,00</strong><small>de taxas estimadas no mês</small></div>
+              <div class="results-top"><span>COMPARAÇÃO MENSAL ESTIMADA</span></div>
+              <div class="rate-comparison" aria-label="Comparação de taxas e custos mensais">
+                <article class="comparison-result" id="comparison-result-primary" aria-labelledby="result-provider">
+                  <div class="comparison-result-top"><span id="result-provider">RV Pay · Débito</span><span class="comparison-result-status" id="result-primary-status">Aguardando taxas</span></div>
+                  <div class="comparison-result-value"><span>Taxa</span><strong id="result-rate-value">—</strong></div>
+                  <div class="comparison-result-value comparison-result-fees"><span>Taxas estimadas no mês</span><strong id="result-fees">Cadastre a taxa</strong></div>
+                </article>
+                <article class="comparison-result" id="comparison-result-secondary" aria-labelledby="result-compare-provider">
+                  <div class="comparison-result-top"><span id="result-compare-provider">—</span><span class="comparison-result-status" id="result-secondary-status">Aguardando taxas</span></div>
+                  <div class="comparison-result-value"><span>Taxa</span><strong id="result-compare-rate">—</strong></div>
+                  <div class="comparison-result-value comparison-result-fees"><span>Taxas estimadas no mês</span><strong id="result-compare-fees">Cadastre a taxa</strong></div>
+                </article>
+              </div>
+              <p class="comparison-key">Verde indica a menor taxa; vermelho indica a maior taxa neste cenário.</p>
               <div class="results-breakdown"><div><span>Faturamento bruto mensal</span><strong id="result-gross">R$ 0,00</strong></div><div><span>Líquido estimado</span><strong id="result-net">R$ 0,00</strong></div></div>
               <p class="savings-callout" id="result-savings">Cadastre a taxa da outra operadora para comparar sua economia.</p>
             </div>

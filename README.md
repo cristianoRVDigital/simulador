@@ -12,7 +12,7 @@ Conecte este repositório ao Netlify. A configuração em `netlify.toml` publica
 
 ## Sobre as taxas
 
-Os valores iniciais da RV Pay foram transcritos da referência fornecida. As taxas de Stone, PagSeguro (PGS) e Minha taxa ficam em branco até serem informadas. A simulação considera somente o percentual cadastrado e não inclui antecipação ou outros custos.
+Os valores iniciais da RV Pay foram transcritos da referência fornecida. As taxas de Stone, PagSeguro (PGS) e Minha taxa ficam em branco até serem informadas. A simulação compara lado a lado a taxa e o custo mensal estimado das duas operadoras selecionadas, destacando em verde a menor taxa e em vermelho a maior. As cores indicam apenas o resultado da comparação e não uma aprovação comercial. A simulação considera somente o percentual cadastrado e não inclui antecipação ou outros custos.
 
 A consulta avançada inclui taxas de referência para EQUIS, PagSeguro (PGS) e STONE no cenário supermercados, D+1, TPV menor que R$ 2 mil e Visa. Os filtros de oferta e de comparação são sincronizados para manter o mesmo cenário nos dois quadros. Para outras combinações, informe as taxas da proposta recebida; os valores preenchidos e as taxas editadas são salvos localmente neste navegador. O líquido é uma estimativa percentual e não inclui cobranças que não estejam na taxa cadastrada.
 

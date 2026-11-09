@@ -159,12 +159,41 @@ function calculate() {
   const sales = Math.max(0, Number(monthlySales.value) || 0);
   const gross = amount * sales;
   const fees = rate === null ? null : gross * rate / 100;
+  const compareFees = compareRate === null ? null : gross * compareRate / 100;
 
-  document.querySelector("#result-rate").textContent = rate === null ? "Sem taxa" : `${formatRate(rate)}%`;
   document.querySelector("#result-provider").textContent = `${provider.name} · ${modes[modeIndex].label}`;
+  document.querySelector("#result-rate-value").textContent = rate === null ? "—" : `${formatRate(rate)}%`;
   document.querySelector("#result-fees").textContent = fees === null ? "Cadastre a taxa" : currency.format(fees);
+  document.querySelector("#result-compare-provider").textContent = `${comparison.name} · ${modes[modeIndex].label}`;
+  document.querySelector("#result-compare-rate").textContent = compareRate === null ? "—" : `${formatRate(compareRate)}%`;
+  document.querySelector("#result-compare-fees").textContent = compareFees === null ? "Cadastre a taxa" : currency.format(compareFees);
   document.querySelector("#result-gross").textContent = currency.format(gross);
   document.querySelector("#result-net").textContent = fees === null ? "—" : currency.format(gross - fees);
+
+  const primaryResult = document.querySelector("#comparison-result-primary");
+  const secondaryResult = document.querySelector("#comparison-result-secondary");
+  const primaryStatus = document.querySelector("#result-primary-status");
+  const secondaryStatus = document.querySelector("#result-secondary-status");
+  [primaryResult, secondaryResult].forEach((result) => result.classList.remove("is-best", "is-higher"));
+  if (rate === null || compareRate === null) {
+    primaryStatus.textContent = rate === null ? "Informe a taxa" : "Aguardando comparação";
+    secondaryStatus.textContent = compareRate === null ? "Informe a taxa" : "Aguardando comparação";
+  } else if (rate < compareRate) {
+    primaryResult.classList.add("is-best");
+    secondaryResult.classList.add("is-higher");
+    primaryStatus.textContent = "Menor taxa";
+    secondaryStatus.textContent = "Maior taxa";
+  } else if (compareRate < rate) {
+    primaryResult.classList.add("is-higher");
+    secondaryResult.classList.add("is-best");
+    primaryStatus.textContent = "Maior taxa";
+    secondaryStatus.textContent = "Menor taxa";
+  } else {
+    primaryResult.classList.add("is-best");
+    secondaryResult.classList.add("is-best");
+    primaryStatus.textContent = "Taxas iguais";
+    secondaryStatus.textContent = "Taxas iguais";
+  }
 
   const savings = document.querySelector("#result-savings");
   if (rate === null) {
