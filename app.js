@@ -115,15 +115,18 @@ function calculate() {
   const gross = amount * sales;
   const fees = rate === null ? null : gross * rate / 100;
   const compareFees = compareRate === null ? null : gross * compareRate / 100;
+  const net = fees === null ? null : gross - fees;
+  const compareNet = compareFees === null ? null : gross - compareFees;
 
   document.querySelector("#result-provider").textContent = `${provider.name} · ${modes[modeIndex].label}`;
   document.querySelector("#result-rate-value").textContent = rate === null ? "—" : `${formatRate(rate)}%`;
   document.querySelector("#result-fees").textContent = fees === null ? "Cadastre a taxa" : currency.format(fees);
+  document.querySelector("#result-net-primary").textContent = net === null ? "Informe a taxa para calcular" : currency.format(net);
   document.querySelector("#result-compare-provider").textContent = `${comparison.name} · ${modes[modeIndex].label}`;
   document.querySelector("#result-compare-rate").textContent = compareRate === null ? "—" : `${formatRate(compareRate)}%`;
   document.querySelector("#result-compare-fees").textContent = compareFees === null ? "Cadastre a taxa" : currency.format(compareFees);
+  document.querySelector("#result-net-secondary").textContent = compareNet === null ? "Informe a taxa para calcular" : currency.format(compareNet);
   document.querySelector("#result-gross").textContent = currency.format(gross);
-  document.querySelector("#result-net").textContent = fees === null ? "—" : currency.format(gross - fees);
 
   const primaryResult = document.querySelector("#comparison-result-primary");
   const secondaryResult = document.querySelector("#comparison-result-secondary");

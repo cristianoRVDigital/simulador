@@ -12,6 +12,6 @@ Conecte este repositório ao Netlify. A configuração em `netlify.toml` publica
 
 ## Sobre as taxas
 
-Os valores iniciais da RV Pay foram transcritos da referência fornecida. As taxas de Stone, PagSeguro (PGS) e Minha taxa ficam em branco até serem informadas. A simulação compara lado a lado a taxa e o custo mensal estimado das duas operadoras selecionadas, destacando em verde a menor taxa e em vermelho a maior. As cores indicam apenas o resultado da comparação e não uma aprovação comercial. A simulação considera somente o percentual cadastrado e não inclui antecipação ou outros custos.
+Os valores iniciais da RV Pay foram transcritos da referência fornecida. As taxas de Stone, PagSeguro (PGS) e Minha taxa ficam em branco até serem informadas. A simulação compara lado a lado a taxa, o valor descontado e o valor estimado a receber no mês para as duas operadoras selecionadas, destacando em verde a menor taxa e em vermelho a maior. A projeção usa o faturamento mensal informado e considera somente o percentual cadastrado; não inclui antecipação ou outras cobranças. As cores indicam apenas o resultado da comparação, não uma aprovação comercial.
 
 No comparativo direto, informe suas condições na coluna **Minha taxa** e compare com RV Pay, Stone e PagSeguro (PGS). O débito tem uma única linha, sem distinção de bandeira; as taxas editadas são salvas neste navegador. Campos vazios não entram na comparação.

@@ -103,7 +103,7 @@
             <div class="calculator-note"><span aria-hidden="true">↗</span><p><strong>Como fazemos a conta</strong><br />Faturamento mensal × (taxa cadastrada ÷ 100). A estimativa não inclui antecipação nem outras cobranças.</p></div>
           </div>
           <div class="calculator-workspace">
-            <p class="calculator-form-hint">Para comparar as operadoras, usamos o mesmo valor por venda e a mesma quantidade de vendas por mês.</p>
+            <p class="calculator-form-hint">Compare quanto cada operadora desconta e quanto você recebe no mês, usando o mesmo valor médio e número de vendas.</p>
             <form id="calculator-form" class="calculator-form">
               <label class="field field-wide">Operadora
                 <select id="provider-select" name="provider"></select>
@@ -127,16 +127,18 @@
                 <article class="comparison-result" id="comparison-result-primary" aria-labelledby="result-provider">
                   <div class="comparison-result-top"><span id="result-provider">RV Pay · Débito</span><span class="comparison-result-status" id="result-primary-status">Aguardando taxas</span></div>
                   <div class="comparison-result-value comparison-result-rate"><span>Taxa aplicada</span><strong id="result-rate-value">—</strong></div>
-                  <div class="comparison-result-value comparison-result-fees"><span>Taxas estimadas no mês</span><strong id="result-fees">Cadastre a taxa</strong></div>
+                  <div class="comparison-result-value comparison-result-fees"><span>Valor descontado no mês</span><strong id="result-fees">Cadastre a taxa</strong></div>
+                  <div class="comparison-result-value comparison-result-net"><span>Valor a receber no mês</span><strong id="result-net-primary">—</strong></div>
                 </article>
                 <article class="comparison-result" id="comparison-result-secondary" aria-labelledby="result-compare-provider">
                   <div class="comparison-result-top"><span id="result-compare-provider">—</span><span class="comparison-result-status" id="result-secondary-status">Aguardando taxas</span></div>
                   <div class="comparison-result-value comparison-result-rate"><span>Taxa aplicada</span><strong id="result-compare-rate">—</strong></div>
-                  <div class="comparison-result-value comparison-result-fees"><span>Taxas estimadas no mês</span><strong id="result-compare-fees">Cadastre a taxa</strong></div>
+                  <div class="comparison-result-value comparison-result-fees"><span>Valor descontado no mês</span><strong id="result-compare-fees">Cadastre a taxa</strong></div>
+                  <div class="comparison-result-value comparison-result-net"><span>Valor a receber no mês</span><strong id="result-net-secondary">—</strong></div>
                 </article>
               </div>
               <p class="comparison-key">Verde indica a menor taxa; vermelho indica a maior taxa neste cenário.</p>
-              <div class="results-breakdown"><div><span>Faturamento bruto mensal</span><strong id="result-gross">R$ 0,00</strong></div><div><span>Líquido estimado</span><strong id="result-net">R$ 0,00</strong></div></div>
+              <div class="results-breakdown"><div><span>Faturamento bruto mensal usado na comparação</span><strong id="result-gross">R$ 0,00</strong></div></div>
               <p class="savings-callout" id="result-savings">Cadastre a taxa da outra operadora para comparar sua economia.</p>
             </div>
             <p class="save-notice" id="save-notice" role="status">Suas taxas são salvas automaticamente neste navegador.</p>
